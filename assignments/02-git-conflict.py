@@ -227,9 +227,11 @@ def login():
     return response
 
 
-@app.route('/newfunction')
-def newfunction():
-    return 'This is new function'
+@app.route('/logout', methods=['GET'])
+def logout():
+    response = app.make_response(redirect(request.referrer))
+    session.pop('user', None)
+    return response
 
 # a helper function for asyncio.gather, does not return a value
 
@@ -318,8 +320,11 @@ def getProducts():
 
 
 def getProduct(product_id):
-    # TODO
-    return None
+    products = getProducts()
+    if product_id + 1 > len(products):
+        return None
+    else:
+        return products[product_id]
 
 
 def getProductDetails(product_id, headers):
